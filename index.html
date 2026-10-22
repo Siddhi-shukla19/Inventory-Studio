@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10111a">
+  <title>StockNest — Inventory Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" aria-label="StockNest home">
+        <span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true">
+          <path d="M7 11h5l3 17h16l4-12H14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="18" cy="33" r="2" fill="currentColor"/><circle cx="30" cy="33" r="2" fill="currentColor"/>
+          <path d="M20 7h11M25.5 2v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="brand-copy"><strong>stocknest</strong><small>INVENTORY STUDIO</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-link active" data-target="dashboard"><span class="nav-icon">⌂</span><span>Overview</span></button>
+        <button class="nav-link" data-action="add"><span class="nav-icon">＋</span><span>Add product</span><span class="nav-add">⌘K</span></button>
+        <button class="nav-link" data-target="inventory"><span class="nav-icon">▤</span><span>Inventory</span><span class="nav-count" id="sidebar-count">2</span></button>
+        <button class="nav-link" data-target="analytics"><span class="nav-icon">◒</span><span>Analytics</span></button>
+        <button class="nav-link" data-action="export"><span class="nav-icon">⇩</span><span>Export report</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card"><div class="tip-icon">✦</div><strong>Small steps.<br>Smarter stock.</strong><p>A clear view of what your store has.</p></div>
+        <div class="profile"><div class="avatar">U</div><div><strong>Workspace owner</strong><small>Local demo account</small></div><span class="profile-dots">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main" id="dashboard">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong>Overview</strong></div>
+        <div class="top-actions"><span class="today-chip"><span class="live-dot"></span><span id="today-date">Today</span></span><button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">◐</button><button class="user-avatar" aria-label="User profile">U</button></div>
+      </header>
+
+      <section class="welcome-row">
+        <div><div class="overline">MONITOR YOUR BUSINESS</div><h1>Inventory overview<span class="title-period">.</span></h1><p class="welcome-sub">Here’s what’s happening with your products today.</p></div>
+        <button class="button-primary" id="add-top"><span class="plus">＋</span> Add product</button>
+      </section>
+
+      <section class="metrics" aria-label="Inventory summary">
+        <article class="metric-card metric-main"><div class="metric-head"><span class="metric-label">Total inventory value</span><span class="metric-symbol violet">＄</span></div><div class="metric-value" id="inventory-value">$825.00</div><div class="metric-foot"><span class="foot-dot violet-dot"></span><span>Combined value of all items</span></div><div class="metric-watermark">＄</div></article>
+        <article class="metric-card"><div class="metric-head"><span class="metric-label">Total products</span><span class="metric-symbol blue">▦</span></div><div class="metric-value" id="total-products">2</div><div class="metric-foot"><span class="status-pill" id="product-status">IN STOCK</span><span>products listed</span></div></article>
+        <article class="metric-card"><div class="metric-head"><span class="metric-label">Affordable items</span><span class="metric-symbol green">⌁</span></div><div class="metric-value" id="affordable-count">1</div><div class="metric-foot"><span class="foot-dot green-dot"></span><span>Priced below $200</span></div></article>
+        <article class="metric-card"><div class="metric-head"><span class="metric-label">Premium items</span><span class="metric-symbol amber">✧</span></div><div class="metric-value" id="premium-count">1</div><div class="metric-foot"><span class="foot-dot amber-dot"></span><span>Priced $200 or above</span></div></article>
+      </section>
+
+      <section class="main-grid">
+        <section class="surface inventory-surface" id="inventory">
+          <div class="section-head">
+            <div><div class="section-title-line"><span class="section-icon">▤</span><h2>Product inventory</h2><span class="count-chip" id="table-count">2 items</span></div><p class="section-description">Manage your products, prices, and categories.</p></div>
+            <button class="button-secondary" id="add-table">＋ New product</button>
+          </div>
+          <div class="table-tools"><label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Search products..." autocomplete="off"><kbd>⌘ F</kbd></label><div class="filter-select-wrap"><span>Category</span><select id="category-filter" aria-label="Filter by category"><option value="All">All categories</option><option value="Budget">Budget</option><option value="Standard">Standard</option><option value="Premium">Premium</option></select></div></div>
+          <div class="table-wrap"><table><thead><tr><th class="number-col">#</th><th>PRODUCT</th><th>PRICE</th><th>CATEGORY</th><th class="actions-col">ACTIONS</th></tr></thead><tbody id="inventory-body"></tbody></table></div>
+          <div class="table-empty hidden" id="empty-state"><div class="empty-icon">⌕</div><strong>No products found</strong><p>Try another search or add a new product.</p><button class="button-secondary" id="empty-add">＋ Add product</button></div>
+          <div class="table-footer"><span id="table-summary">Showing 2 products</span><span><span class="live-dot"></span> Changes update instantly</span></div>
+        </section>
+
+        <aside class="right-stack">
+          <section class="surface chart-surface" id="analytics">
+            <div class="section-head compact"><div><h2>Inventory value</h2><p class="section-description">Share by product</p></div><span class="chart-badge">LIVE</span></div>
+            <div class="chart-content"><div class="donut" id="value-donut"><div class="donut-hole"><strong id="donut-total">$825</strong><span>TOTAL VALUE</span></div></div><div class="legend" id="value-legend"></div></div>
+            <div class="chart-divider"></div><div class="chart-bottom"><span>Products tracked</span><strong id="chart-products">2</strong></div>
+          </section>
+          <section class="surface categories-surface">
+            <div class="section-head compact"><div><h2>Category breakdown</h2><p class="section-description">Products by price range</p></div><span class="section-icon">◫</span></div>
+            <div id="category-breakdown" class="category-list"></div>
+          </section>
+          <section class="surface quick-surface">
+            <div class="section-head compact"><div><h2>Quick actions</h2><p class="section-description">Get things done faster</p></div></div>
+            <button class="quick-action" id="prompt-add"><span class="quick-icon purple-bg">⌁</span><span><strong>Add with prompt()</strong><small>Try the JavaScript input flow</small></span><span class="quick-arrow">↗</span></button>
+            <button class="quick-action" id="calculate-open"><span class="quick-icon green-bg">％</span><span><strong>Tax &amp; discount</strong><small>Calculate a final inventory value</small></span><span class="quick-arrow">↗</span></button>
+            <button class="quick-action" id="export-quick"><span class="quick-icon amber-bg">⇩</span><span><strong>Download report</strong><small>Export as a CSV spreadsheet</small></span><span class="quick-arrow">↗</span></button>
+          </section>
+        </aside>
+      </section>
+
+      <section class="surface report-surface" id="reports">
+        <div class="section-head"><div><div class="section-title-line"><span class="section-icon">↗</span><h2>Insights &amp; report</h2></div><p class="section-description">A quick summary generated from your current inventory.</p></div><button class="button-quiet" id="copy-report">Copy report ↗</button></div>
+        <div class="report-grid">
+          <div class="insight-card"><span class="insight-label">AFFORDABLE PRODUCTS</span><strong id="report-affordable">1 item</strong><p>Products priced under $200</p><div class="progress-track"><div class="progress-fill green-fill" id="affordable-progress"></div></div></div>
+          <div class="insight-card"><span class="insight-label">HIGHEST VALUE PRODUCT</span><strong id="highest-product">Laptop</strong><p id="highest-description">$800.00 · Premium</p></div>
+          <div class="insight-card report-list-card"><span class="insight-label">FORMATTED REPORT</span><ul id="formatted-list"><li>LAPTOP <span>$800.00</span></li><li>MOUSE <span>$25.00</span></li></ul></div>
+        </div>
+        <div class="tax-panel hidden" id="tax-panel"><div><h3>Tax &amp; discount calculator</h3><p>Tax is added first, then the discount amount is subtracted from the original subtotal.</p></div><div class="tax-controls"><label>Tax %<input type="number" id="tax-rate" min="0" max="100" value="5"></label><label>Discount %<input type="number" id="discount-rate" min="0" max="100" value="10"></label><button class="button-primary" id="calculate-total">Calculate</button></div><p id="final-total" class="calc-result">Enter percentages and calculate.</p></div>
+      </section>
+
+      <footer><span>© 2026 StockNest <span class="footer-dot">·</span> Inventory Studio</span><span>Made for thoughtful stock management <span class="footer-heart">♥</span></span></footer>
+    </main>
+  </div>
+
+  <dialog id="product-dialog" class="modal">
+    <form id="product-form" class="modal-form">
+      <button type="button" class="modal-close" id="close-dialog" aria-label="Close dialog">×</button>
+      <div class="modal-icon">＋</div><div class="overline">PRODUCT DETAILS</div><h2 id="dialog-title">Add a new product</h2><p class="modal-description">Add an item to your inventory. Your dashboard will update automatically.</p>
+      <label for="product-name">Product name</label><input id="product-name" type="text" placeholder="e.g. Monitor" maxlength="70" required>
+      <label for="product-price">Price in USD ($)</label><div class="price-input"><span>$</span><input id="product-price" type="number" min="0.01" step="0.01" placeholder="150.00" required></div>
+      <p class="form-error" id="form-message" aria-live="polite"></p><button class="button-primary modal-submit" type="submit" id="submit-product">Add to inventory <span>→</span></button>
+      <p class="modal-footnote">Demo mode · Data is kept until you refresh the page</p>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
